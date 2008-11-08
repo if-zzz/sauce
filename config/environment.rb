@@ -65,3 +65,16 @@ Rails::Initializer.run do |config|
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector
 end
+
+require 'mini_exiftool'
+require 'ftools'
+
+PHOTOS_ROOT = RAILS_ROOT + '/public/photos'
+
+LARGE_IMAGE_PATTERN = /.large\.jpg$/
+
+LENS_TRANSLATIONS = {
+  '50.0 mm' => 'Sigma 50mm f/2.8 EX DG Macro',
+  '24.0-70.0 mm' => 'Sigma 24-70mm f/2.8 EX Aspherical DG DF',
+  '15.0-30.0 mm' => 'Sigma 15-30/3.5-4.5 EX DG DF'
+}
