@@ -1,0 +1,7 @@
+<% if parents.length > 0 %>
+	<ul>
+		<% parents.each do |parent| %>
+			<li><a href="<%= url_for(:action => :index,:controller => :photos) + '/' + parent.url + '/' %>"><%= parent.name %></a></li>
+		<% end %>
+	</ul>
+<% end %>

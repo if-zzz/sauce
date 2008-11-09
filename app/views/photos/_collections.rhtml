@@ -1,0 +1,7 @@
+<% if collections.length > 0 %>
+	<ul>
+		<% collections.each do |collection| %>
+			<%= render :partial => 'collection', :locals => {:collection => collection} %>
+		<% end %>
+	</ul>
+<% end %>

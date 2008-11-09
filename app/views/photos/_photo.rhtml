@@ -1,0 +1,6 @@
+<li class="photo<% if photo == active %> active<% end %>">
+	<a href="<%= url_for(:action => :index,:controller => :photos) + '/' + photo.url + '/' %>">
+		<img src="<%= photo.src %>" alt="<%= photo.alt %>"/>
+		<span><%= photo.name %></span>
+	</a>
+</li>

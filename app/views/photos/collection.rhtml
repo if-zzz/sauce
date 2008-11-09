@@ -1,0 +1,18 @@
+<h1>Collection</h1>
+
+<h2><%= @collection.name %></h2>
+
+<% if @collection.parents.length > 0 %>
+	<h2>Parents</h2>
+	<%= render :partial => 'parents', :locals => {:parents => @collection.parents} %>
+<% end %>
+
+<% if @collection.children.length > 0 %>
+	<h2>Collections</h2>
+	<%= render :partial => 'collections', :locals => {:collections => @collection.children.sort_by(&:name)} %>
+<% end %>
+
+<% if @collection.photos.length > 0 %>
+	<h2>Photos</h2>
+	<%= render :partial => 'photos', :locals => {:photos => @collection.photos.sort_by(&:name),:active => false} %>
+<% end %>

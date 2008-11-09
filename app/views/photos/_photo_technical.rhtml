@@ -1,0 +1,18 @@
+<% properties = [
+	[:f_stop,'&fnof;','',''],
+	[:shutter_speed,'Shutter','1/',''],
+	[:focal_length,'Focal Length','','mm'],
+	[:iso,'ISO','',''],
+	[:lens,'Lens','',''],
+	[:camera,'Camera','',''],
+]; if properties.find{|pair| photo[pair[0]]} %>
+	<dl class="technical">
+		<% properties.each do |property| %>
+		<% key,label,before,after = property %>
+			<% if photo.send(key) %>
+				<dd><%= before + photo.send(key).to_s + after %></dd>
+				<dt><%= label %></dt>
+			<% end %>
+		<% end %>
+	</dl>
+<% end %>

@@ -1,0 +1,7 @@
+<% if photos.length > 0 %>
+	<ul class="photos">
+		<% photos.each do |photo| %>
+			<%= render :partial => 'photo', :locals => {:photo => photo,:active => active} %>
+		<% end %>
+	</ul>
+<% end %>
