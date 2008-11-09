@@ -5,7 +5,7 @@
 
 
 class Photo < ActiveRecord::Base
-  after_create :add_exif_data, :set_url, :set_src, :add_tags
+  after_create :add_exif_data, :set_url, :set_src, :add_tags, :rename_source_file
   
   acts_as_list :scope => :photo_collection
   
@@ -82,6 +82,14 @@ class Photo < ActiveRecord::Base
     (self.title.match(/^[\d]+$/) ? self.collecton.name + ' #' + self.title : self.title).gsub(/[\-_]+/,' ')
   end
   
+  def src
+    PHOTOS_URI + '/' + File.dirname(self.path) + '/' + read_attribute(:src)
+  end
+  
+  def large_src
+    PHOTOS_URI + '/' + File.dirname(self.path) + '/' + File.basename(read_attribute(:src),'.jpg') + LARGE_IMAGE_EXTENSION + '.jpg'
+  end
+  
   #produces alt text in this format
   #name (tag 1, tag 2, tag 3): Caption - Location
   def alt
@@ -99,8 +107,17 @@ class Photo < ActiveRecord::Base
     @source_path = Photo.photos_root_list.find{|path| path[self.path]}
   end
   
+  def rename_source_file
+    original_file = source_path
+    cleaned_original_file = File.dirname(source_path) + '/' + File.basename(self.src)
+    original_large_file = File.dirname(source_path) + '/' + File.basename(source_path,'.jpg') + LARGE_IMAGE_EXTENSION + '.jpg'
+    cleaned_original_large_file = File.dirname(source_path) + '/' + File.basename(self.src,'.jpg') + LARGE_IMAGE_EXTENSION + '.jpg'
+    File.rename(original_file,cleaned_original_file) if !File.fnmatch(original_file,cleaned_original_file)
+    File.rename(original_large_file,cleaned_original_large_file) if !File.fnmatch(original_large_file,cleaned_original_large_file)
+  end
+  
   def set_src
-    update_attribute :src, '/photos/' + self.id.to_s + '-' + self.title.downcase.underscore.gsub(/\s/,'_') + '.' + source_path.split('.').pop
+    update_attribute :src, self.title.downcase.underscore.gsub(/\s/,'_') + '.' + source_path.split('.').pop
   end
     
   def add_exif_data
