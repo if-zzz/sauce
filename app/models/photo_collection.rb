@@ -68,6 +68,10 @@ class PhotoCollection < ActiveRecord::Base
   def set_name
     update_attribute :name, path.split('/').pop.gsub(/[\_\-]+/,' ').split(/\s+/).each(&:capitalize!).join(' ')
   end
+  
+  def self.top_level
+    PhotoCollection.find(:all).select{|collection| !collection.parent}
+  end
     
   def parent
     return @parent if !@parent.nil?

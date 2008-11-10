@@ -1,0 +1,47 @@
+html,
+body {
+	margin:0;
+	padding:0;
+	text-align:center;
+	background-color:#000;
+	font-family:"Lucida Grande",Verdana;
+	font-size:11px;
+	color:#666;
+	height:100%;
+	width:100%;
+}
+
+a {
+	color:#333;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+a:active,
+a:hover {
+	color:#0058c5;
+	text-decoration:underline;
+}
+
+#container {
+	background-color:#fff;
+	padding:150px 0;
+	margin:0 0;
+}
+
+h1 {
+	margin:0 auto;
+	width:600px;
+	height:167px;
+	display:block;
+	background-image:url("logo_index.gif");
+}
+
+h1 span {
+	display:none;
+}
+
+p {
+	padding:0;
+	margin:50px 0 -50px 0;
+}

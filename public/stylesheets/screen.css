@@ -1,0 +1,203 @@
+body {
+    text-align:center;
+    background-color:#fff;
+    font-size:11px;
+    font-family:"Lucida Grande",Verdana;
+    color:#333;
+}
+
+#container {
+    text-align:left;
+    margin:25px auto;
+    width:900px;
+    position:relative;
+}
+
+h1 {
+    padding:0;
+    margin:0;
+    display:block;
+    width:302px;
+    height:86px;
+    background-image:url("logo.gif");
+    position:absolute;
+    top:0;
+    left:0;
+}
+
+h1 span {
+    display:none;
+}
+
+#navigation {
+    position:absolute;
+    top:106px;
+    right:0;
+    width:175px;
+}
+
+#navigation h3,
+#navigation ul li a {
+    padding:7px 0px 7px 10px;
+}
+
+#navigation ul ul li a {
+    padding:7px 0px 7px 25px;
+}
+
+#navigation h3 {
+    margin:0;
+    border-bottom:1px solid #eee;
+    background-color:#ddd;
+    color:#333;
+    font-size:11px;
+    -moz-border-radius-topright:3px;
+    -moz-border-radius-topleft:3px;
+    -webkit-border-top-right-radius:3px;
+    -webkit-border-top-left-radius:3px;
+}
+
+#navigation ul {
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+#navigation ul li {
+    padding:0;
+    margin:0;
+}
+
+#navigation ul li.active a {
+    font-weight:bold;
+}
+
+#navigation ul li.inactive a {
+    font-weight:normal;
+}
+
+#navigation ul li a {
+    text-decoration:none;
+    display:block;
+    border-bottom:1px solid #eee;
+    color:#333;
+}
+
+#navigation ul li a:hover {
+    background-color:#f3f3f3;
+}
+
+#photo,
+#main {
+    height:510px;
+    width:680px;
+    position:absolute;
+    top:106px;
+    left:0;
+}
+
+#photo table {
+    
+}
+
+#photo table tr td.previous,
+#photo table tr td.next {
+    width:30px;
+}
+
+#photo table tr td.previous a,
+#photo table tr td.next a {
+    display:block;
+    width:30px;
+    height:470px;
+    padding:0;
+    margin:0;
+}
+
+#photo table tr td.previous a span,
+#photo table tr td.next a span {
+    display:none;
+}
+
+#photo table tr td.previous a {
+    background-image:url("previous.gif");
+}
+
+#photo table tr td.previous a:hover {
+    background-position:-30px 0px;
+}
+
+#photo table tr td.next a {
+    background-image:url("next.gif");
+    background-position:-30px 0px;
+}
+
+#photo table tr td.next a:hover {
+    background-position:0px 0px;
+}
+
+
+#photo table tr td.photo_cell {
+    height:450px;
+    vertical-align:middle;
+    width:620px;
+    text-align:center;
+}
+
+#photo table tr td.photo_cell div.photo_padding {
+    
+}
+
+#photo table tr td.photo_cell div.photo_padding img {
+    padding:9px;
+    border:1px solid #ededed;
+    cursor:pointer;
+    cursor:hand;
+}
+
+#photo table tr.info td.left {
+    
+}
+
+#photo table tr.info td.left h2 {
+    color:#000;
+    font-size:13px;
+    font-weight:normal;
+    padding:0;
+    margin:10px 0 0 0;
+}
+
+#photo table tr.info td.left p {
+    padding:0;
+    margin:7px 0 0 0;
+    font-size:9px;
+    color:#999;
+}
+
+#photo table tr.info td.right p {
+    padding:0;
+    margin:10px 0 0 0;
+    text-align:right;
+    font-size:10px;
+    color:#666;
+}
+
+#photo table tr.caption td p {
+    
+}
+
+#photo_large {
+    position:absolute;
+    top:0;
+    left:0;
+}
+
+#photo_large td {
+    text-align:center;
+    vertical-align:middle;
+}
+
+#photo_large img {
+    cursor:pointer;
+    cursor:hand;
+}

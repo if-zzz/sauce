@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title>Saucy Tiger Studios</title>
+    <link rel="stylesheet" href="/stylesheets/screen.css"/>
+    <script src="/javascripts/application.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <a href="/photos"><h1><span>Saucy Tiger Studios</span></h1></a>
+      <%= yield %>
+      <%= render :partial => 'photos/navigation' %>
+    </div>
+    <% if @photo %>
+      <%= render :partial => 'photos/photo_large' %>
+    <% end %>
+  </body>
+</html>

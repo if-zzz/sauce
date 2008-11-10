@@ -77,9 +77,38 @@ class Photo < ActiveRecord::Base
     actions
   end
   
+  def next
+    return nil if !photo_collection
+    photo_collection.photos.find_by_position(position + 1)
+  end
+  
+  def previous
+    return nil if !photo_collection
+    photo_collection.photos.find_by_position(position - 1)
+  end
+  
+  #returns a string like: Canon 5D 18mm ƒ8.0 1/150 @ ISO 800
+  def technical_details
+    [
+      [:camera,'',''],
+      [:focal_length,'','mm'],
+      [:f_stop,'&fnof;',''],
+      [:shutter_speed,'1/',''],
+      [:iso,'ISO','']
+    ].collect{|property|
+      key,before,after = property
+      value = send(key)
+      if value
+        before + value + after
+      else
+        nil
+      end
+    }.reject(&:nil?).join(' ')
+  end
+  
   #returns the title, if the title is just a digit it becomes "collection.name #title" (Landscape #5)
   def name
-    (self.title.match(/^[\d]+$/) ? self.collecton.name + ' #' + self.title : self.title).gsub(/[\-_]+/,' ')
+    (self.title.match(/^[\d]+$/) ? self.collecton.name + ' #' + self.title : self.title).gsub(/[\-_]+/,' ').split(/\s+/).each(&:capitalize!).join(' ')
   end
   
   def src
