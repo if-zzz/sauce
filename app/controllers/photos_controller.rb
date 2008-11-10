@@ -28,11 +28,16 @@ class PhotosController < ApplicationController
     Photo.update
     expire_page :action => :index
     PhotoCollection.find(:all).each do |collection|
-      expire_page url_for(:action => :index,:controller => :photos) + '/' + collection.url + '/'
+      url = url_for(:action => :index,:controller => :photos) + '/' + collection.url + '/'
+      cache_page url
+      expire_page 
     end
     Photo.find(:all).each do |photo|
-      expire_page url_for(:action => :index,:controller => :photos) + '/' + photo.url + '/'
+      url = url_for(:action => :index,:controller => :photos) + '/' + photo.url + '/'
+      expire_page url
+      cache_page url
     end
+    
     render :text => 'Cache cleared.'
   end
   

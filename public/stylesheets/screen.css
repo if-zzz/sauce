@@ -29,6 +29,29 @@ h1 span {
     display:none;
 }
 
+#top_navigation {
+    position:absolute;
+    top:0;
+    right:0;
+    list-style:none;
+}
+
+#top_navigation li {
+    float:left;
+}
+
+#top_navigation li a {
+    display:block;
+    margin:24px 10px 0 10px;
+    font-weight:bold;
+    text-decoration:none;
+    color:#999;
+}
+
+#top_navigation li a:hover {
+    color:#333;
+}
+
 #navigation {
     position:absolute;
     top:106px;
@@ -183,7 +206,10 @@ h1 span {
 }
 
 #photo table tr.caption td p {
-    
+    padding:0;
+    margin:10px 0 0 0;
+    font-size:10px;
+    color:#666;
 }
 
 #photo_large {
