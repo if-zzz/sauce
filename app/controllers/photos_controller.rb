@@ -24,24 +24,26 @@ class PhotosController < ApplicationController
     end
   end
   
-  def update
-    Photo.update
-    expire_page :action => :index
-    PhotoCollection.find(:all).each do |collection|
-      url = url_for(:action => :index,:controller => :photos) + '/' + collection.url + '/'
-      cache_page url
-      expire_page 
+  def clear_all_cached_pages
+    page_list.each do |page|
+      path = page[:path]
+      page.delete :path
+      expire_page(url_for(page) + (path ? '/' + path.join('/') : ''))
     end
-    Photo.find(:all).each do |photo|
-      url = url_for(:action => :index,:controller => :photos) + '/' + photo.url + '/'
-      expire_page url
-      cache_page url
-    end
-    
-    render :text => 'Cache cleared.'
+    render :text => page_list.inspect
   end
   
   protected
+  
+  def page_list
+    collection_pages = PhotoCollection.find(:all).collect do |collection|
+      {:action => :index, :controller => :photos, :path => collection.url.split('/')}
+    end
+    photo_pages = Photo.find(:all).collect do |photo|
+      {:action => :index, :controller => :photos, :path => photo.url.split('/')}
+    end
+    [{:action => :index, :controller => :photos}].concat(collection_pages).concat(photo_pages)
+  end
   
   def collection_index_partial(collection)
     collection_bits = collection.path.split('/')
