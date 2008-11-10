@@ -1,6 +1,4 @@
 class PhotosController < ApplicationController
-  caches_page :index, :photo, :collection
-
   def index
     @collections = PhotoCollection.find(:all).select{|collection| collection.url.count('/') == 0}
   end
