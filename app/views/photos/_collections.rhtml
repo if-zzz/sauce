@@ -4,9 +4,7 @@
       <% active = @collection && (collection.path == @collection.path || @collection.parents.include?(collection)) %>
       <li class="collection <%= active ? 'active' : 'inactive' %>">
         <a href="<%= collection_url(collection) %>"><%= collection.name %></a>
-        <% if active %>
-          <%= render :partial => 'photos/collections', :locals => {:collections => collection.children} %>
-        <% end %>
+        <%= render :partial => 'photos/collections', :locals => {:collections => collection.children} %>
       </li>
     <% end %>
   </ul>

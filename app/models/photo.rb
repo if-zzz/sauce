@@ -174,6 +174,7 @@ class Photo < ActiveRecord::Base
         :photo_tag_id => (PhotoTag.find_by_tag(str) || PhotoTag.create(:tag => str)).id,
         :photo_id => self.id
       })
+      self.update_attribute :nsfw, 1 if src.downcase == 'nsfw'
     end
   end
   

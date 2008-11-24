@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 4) do
+ActiveRecord::Schema.define(:version => 5) do
 
   create_table "photo_collections", :force => true do |t|
     t.string "name"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(:version => 4) do
     t.string   "lens"
     t.text     "caption"
     t.datetime "last_modified"
+    t.integer  "nsfw"
   end
 
   add_index "photos", ["caption"], :name => "photos_fulltext_index"

@@ -1,3 +1,21 @@
-<div id="main">
-  <p>Please choose a category on the right.</p>
+<div id="home">
+  <div id="latest">
+    <div class="item">
+      <a href="<%= collection_url(PhotoCollection.find_by_name('Plants')) %>">
+        <h3>Plants</h3>
+        <div class="padding"><img src="/stylesheets/latest_plants.jpg"/></div>
+      </a>
+    </div>
+    <div class="item">
+      <a href="<%= collection_url(PhotoCollection.find_by_name('Water')) %>">
+        <h3>Water</h3>
+        <div class="padding"><img src="/stylesheets/latest_water.jpg"/></div>
+      </a>
+    </div>
+  </div>
+  <div id="recent"><span>Recent</span></div>
+  <div id="about">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
+    <p id="elsewhere"><a href="http://www.facebook.com/people/Ryan-Johnson/582238494">Facebook</a> | <a href="http://twitter.com/saucytiger">Twitter</a> | <a href="http://flickr.com/saucytiger">Flickr</a> | <a href="mailto:ryan@saucytiger.com">Email</a></p>
+  </div>
 </div>

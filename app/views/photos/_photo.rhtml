@@ -1,40 +1,41 @@
-<div id="photo">
-  <table cellpadding="0" cellspacing="0">
-    <tr>
-      <td class="previous">
-        <% if @photo.previous %>
-          <a href="<%= photo_url(@photo.previous) %>"><span>&lsaquo;</span></a>
-        <% end %>
-      </td>
-      <td class="photo_cell" colspan="2">
-        <div class="photo_padding"><img src="<%= @photo.src %>" alt="<%= @photo.alt %>" id="image"/></div>
-      </td>
-      <td class="next">
-        <% if @photo.next %>
-          <a href="<%= photo_url(@photo.next) %>"><span>&rsaquo;</span></a>
-        <% end %>
-      </td>
-    </tr>
-    <tr class="info">
-      <td></td>
-      <td class="left">
-        <h2><%= @photo.name %></h2>
-        <p><%= @photo.technical_details %></p>
-      </td>
-      <td class="right">
-        <p><%= @photo.location || '&nbsp;' %></p>
-        <p><%= @photo.date ? @photo.date.strftime('%B %Y') : '' %></p>
-      </td>
-      <td></td>
-    </tr>
-    <% if @photo.caption %>
-      <tr class="caption">
-        <td></td>
-        <td colspan="2">
-          <p><%= @photo.caption %></p>
-        </td>
-        <td></td>
-      </tr>
-    <% end %>
-  </table>
-</div>
+<% content_for :title do %><%= @photo.name %> : <% end %>
+<table class="photo" cellpadding="0" cellspacing="0">
+  <tr>
+    <td class="previous">
+      <% if @previous_photo %>
+        <img src="<%= @previous_photo.large_src %>" class="previous_photo" style="display:none;"/>
+        <% url = photo_url(@previous_photo) %>
+        <a href="<%= url[0,url.length - 1] %>"><span>&lsaquo;</span></a>
+      <% end %>
+    </td>
+    <td class="photo_cell">
+      <div class="photo_padding"><img src="<%= @photo.large_src %>" alt="<%= @photo.alt %>" id="image"/></div>
+    </td>
+    <td class="next">
+      <% if @next_photo %>
+        <img src="<%= @next_photo.large_src %>" class="next_photo" style="display:none;"/>
+        <% url = photo_url(@next_photo) %>
+        <a href="<%= url[0,url.length - 1] %>"><span>&rsaquo;</span></a>
+      <% end %>
+    </td>
+  </tr>
+</table>
+<table cellpadding="0" cellspacing="0" class="info">
+  <tr>
+    <td class="left">
+      <p><b><%= @photo.name %></b><span><%= @photo.technical_details %></span></p>
+    </td>
+    <td class="right">
+      <p><span><%= @photo.location || '&nbsp;' %></span><%= @photo.date ? @photo.date.strftime('%B %Y') : '' %></p>
+    </td>
+  </tr>
+</table>
+<% if @photo.nsfw %>
+  <%= render :partial => 'photos/nsfw' %>
+<% end %>
+<% if @previous_collection %>
+  <a href="<%= collection_url(@previous_collection) %>" class="previous_collection"><span><%= @previous_collection.name %></span></a>
+<% end %>
+<% if @next_collection %>
+  <a href="<%= collection_url(@next_collection) %>" class="next_collection"><span><%= @next_collection.name %></span></a>
+<% end %>

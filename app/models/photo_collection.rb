@@ -1,11 +1,13 @@
 class PhotoCollection < ActiveRecord::Base
-  has_many :photos, :include => [:photo_tags,:photo_collection]
+  has_many :photos
   after_create :set_photos_collection_ids, :set_name
   before_create :generate_url
   
   def self.clear_cache
     @@all_urls = nil
     @@all_options = nil
+    @top_level = nil
+    @flattened = nil
   end
   clear_cache
     
@@ -70,7 +72,31 @@ class PhotoCollection < ActiveRecord::Base
   end
   
   def self.top_level
-    PhotoCollection.find(:all).select{|collection| !collection.parent}
+    return @top_level if @top_level
+    @top_level = PhotoCollection.find(:all,:include => :photos).select{|collection| !collection.parent}
+    @top_level
+  end
+  
+  def self.flattened
+    return @flattened if @flattened
+    @flattened = top_level.collect{|collection| [collection] + collection.all_children}.flatten.reject{|collection| collection.photos.length == 0}
+    @flattened
+  end
+  
+  def previous
+    list = PhotoCollection.flattened
+    list.each_with_index do |collection,i|
+      return list[i - 1] if i > 0 && self.id == collection.id && list[i - 1]
+    end
+    return nil
+  end
+  
+  def next
+    list = PhotoCollection.flattened
+    list.each_with_index do |collection,i|
+      return list[i + 1] if self.id == collection.id && list[i + 1]
+    end
+    return nil
   end
     
   def parent

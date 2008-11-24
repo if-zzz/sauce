@@ -1,16 +1,26 @@
 class PhotosController < ApplicationController
+  protect_from_forgery :only => [:create, :update, :destroy]
+  
+  caches_page :index, :photo, :collection
+
   def index
     @collections = PhotoCollection.find(:all).select{|collection| collection.url.count('/') == 0}
   end
   
   def photo
-    return collection if !@photo && !@photo = Photo.find_by_url(params[:path].join('/'),:include => [:photo_tags,:photo_collection])
+    return collection if !@photo && !@photo = Photo.find_by_url(params[:path].join('/').gsub(/\.html$/,''),:include => [:photo_tags,:photo_collection])
     @collection = @photo.photo_collection
+    @previous_collection = @collection.previous
+    @next_collection = @collection.next
+    @next_photo = @photo.next
+    @previous_photo = @photo.previous
   end
   
   def collection
-    raise UnknownAction if !@collection = PhotoCollection.find_by_url(params[:path].join('/'))
+    return no_collection_or_photo if !@collection = PhotoCollection.find_by_url(params[:path].join('/'))
     if(@collection_index_partial = collection_index_partial(@collection))
+      @previous_collection = @collection.previous
+      @next_collection = @collection.next
       render :action => :collection
     else
       @photo = @collection.photos.first
@@ -20,6 +30,10 @@ class PhotosController < ApplicationController
         render :action => :photo_missing
       end
     end
+  end
+  
+  def no_collection_or_photo
+    render :action => 'photo_missing'
   end
   
   def clear_all_cached_pages
