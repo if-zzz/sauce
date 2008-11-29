@@ -5,7 +5,7 @@
 
 
 class Photo < ActiveRecord::Base
-  after_create :add_exif_data, :set_url, :set_src, :add_tags, :rename_source_file
+  after_create :add_exif_data, :set_url, :set_src, :set_last_modified, :add_tags, :rename_source_file
   
   acts_as_list :scope => :photo_collection
   
@@ -19,8 +19,12 @@ class Photo < ActiveRecord::Base
   end
   clear_cache
   
+  def self.clean_filename(filename)
+    filename.gsub(/([a-z])([A-Z])/){|match| $1 + '_' + $2.downcase}.downcase.underscore.gsub(/\s/,'_')
+  end
+  
   def self.photos_root_list
-    Dir[PHOTOS_ROOT + '/**/*.jpg'].reject{|item| item.match(LARGE_IMAGE_PATTERN)}
+    Dir[PHOTOS_ROOT + '/**/*.jpg']
   end
   
   #returns an array of the paths of photos stored in the database 
@@ -40,7 +44,8 @@ class Photo < ActiveRecord::Base
   def self.scan
     to_add = []
     to_remove = []
-    
+    to_update = []
+
     Photo.all_paths_in_filesystem.each do |path_in_filesystem|
       to_add.push(path_in_filesystem) if !Photo.all_paths_in_database.select{|path_in_database| path_in_database == path_in_filesystem}[0]
     end
@@ -49,9 +54,27 @@ class Photo < ActiveRecord::Base
       to_remove.push(path_in_database) if !Photo.all_paths_in_filesystem.select{|path_in_filesystem| path_in_filesystem == path_in_database}[0]
     end
     
+    Photo.all_paths_in_filesystem.each do |path_in_filesystem|
+      if !to_add.include?(path_in_filesystem) && !to_remove.include?(path_in_filesystem)
+        entry = Photo.find_by_path(path_in_filesystem)
+        if entry && File.mtime(entry.source_path) > entry.last_modified
+          to_update.push(path_in_filesystem)
+        end
+      elsif to_add.include?(path_in_filesystem)
+        cleaned = Photo.clean_filename(path_in_filesystem)
+        entry = Photo.find_by_path(cleaned)
+        if entry
+          to_update.push(path_in_filesystem)
+        end
+      end
+    end
+    
+    to_add.reject!{|item| to_update.include?(item)}
+    
     {
       :add => to_add,
-      :remove => to_remove
+      :remove => to_remove,
+      :update => to_update
     }
   end
 
@@ -67,6 +90,18 @@ class Photo < ActiveRecord::Base
     
     actions[:remove].each do |path|
       Photo.find_all_by_path(path).each(&:destroy)
+    end
+    
+    actions[:update].each do |path|
+      if path != Photo.clean_filename(path)
+        File.unlink(PHOTOS_ROOT + '/' + Photo.clean_filename(path) + '.jpg')
+        File.rename(PHOTOS_ROOT + '/' + path + '.jpg',PHOTOS_ROOT + '/' + Photo.clean_filename(path) + '.jpg')
+      end
+      photo = Photo.find_by_path(Photo.clean_filename(path))
+      photo.photo_taggings.each(&:destroy)
+      photo.add_exif_data
+      photo.add_tags
+      photo.save
     end
     
     Photo.clear_cache
@@ -115,10 +150,6 @@ class Photo < ActiveRecord::Base
     PHOTOS_URI + '/' + File.dirname(self.path) + '/' + read_attribute(:src)
   end
   
-  def large_src
-    PHOTOS_URI + '/' + File.dirname(self.path) + '/' + File.basename(read_attribute(:src),'.jpg') + LARGE_IMAGE_EXTENSION + '.jpg'
-  end
-  
   #produces alt text in this format
   #name (tag 1, tag 2, tag 3): Caption - Location
   def alt
@@ -139,14 +170,15 @@ class Photo < ActiveRecord::Base
   def rename_source_file
     original_file = source_path
     cleaned_original_file = File.dirname(source_path) + '/' + File.basename(self.src)
-    original_large_file = File.dirname(source_path) + '/' + File.basename(source_path,'.jpg') + LARGE_IMAGE_EXTENSION + '.jpg'
-    cleaned_original_large_file = File.dirname(source_path) + '/' + File.basename(self.src,'.jpg') + LARGE_IMAGE_EXTENSION + '.jpg'
     File.rename(original_file,cleaned_original_file) if !File.fnmatch(original_file,cleaned_original_file)
-    File.rename(original_large_file,cleaned_original_large_file) if !File.fnmatch(original_large_file,cleaned_original_large_file)
   end
   
   def set_src
-    update_attribute :src, self.title.downcase.underscore.gsub(/\s/,'_') + '.' + source_path.split('.').pop
+    update_attribute :src, Photo.clean_filename(self.title) + '.' + source_path.split('.').pop
+  end
+  
+  def set_last_modified
+    update_attribute :last_modified, File.mtime(source_path)
   end
     
   def add_exif_data

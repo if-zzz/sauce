@@ -24,7 +24,8 @@ a {
     width:10px;
     height:10px;
     position:absolute;
-    bottom:15px;
+    z-index:100;
+    top:50px;
     left:50%;
     margin-left:-5px;
     background-image:url("progress.gif");
@@ -37,6 +38,8 @@ a {
 
 #navigation {
     position:absolute;
+    top:0;
+    left:0;
     width:100%;
     height:106px;
     z-index:5;
@@ -92,6 +95,14 @@ a {
                 color:#555;
             }
 
+            #navigation ul li#contact_link a {
+                padding:46px 44px 46px 24px;
+            }
+            
+            #navigation ul li#collections_link a {
+                padding:46px 24px 46px 4px;
+            }
+            
             #navigation ul li a:hover {
                 color:#000;
             }
@@ -696,3 +707,17 @@ a {
     margin-left:-175px;
     margin-top:-50px;
 }
+/*
+.fader {
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 1s;
+}
+
+.fade_out {
+    opacity:0;
+}
+
+.fade_in {
+    opactiy:1;
+}
+*/

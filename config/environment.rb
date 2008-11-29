@@ -16,9 +16,6 @@ require 'ftools'
 PHOTOS_ROOT = RAILS_ROOT + '/public/photos'
 PHOTOS_URI = '/photos'
 
-LARGE_IMAGE_PATTERN = /.large\.jpg$/
-LARGE_IMAGE_EXTENSION = '.large'
-
 LENS_TRANSLATIONS = {
   '50.0 mm' => 'Sigma 50mm f/2.8 EX DG Macro',
   '24.0-70.0 mm' => 'Sigma 24-70mm f/2.8 EX Aspherical DG DF',

@@ -3,17 +3,17 @@
   <tr>
     <td class="previous">
       <% if @previous_photo %>
-        <img src="<%= @previous_photo.large_src %>" class="previous_photo" style="display:none;"/>
+        <img src="<%= @previous_photo.src %>" class="previous_photo" style="display:none;"/>
         <% url = photo_url(@previous_photo) %>
         <a href="<%= url[0,url.length - 1] %>"><span>&lsaquo;</span></a>
       <% end %>
     </td>
     <td class="photo_cell">
-      <div class="photo_padding"><img src="<%= @photo.large_src %>" alt="<%= @photo.alt %>" id="image"/></div>
+      <div class="photo_padding"><img src="<%= @photo.src %>" alt="<%= @photo.alt %>" id="image"/></div>
     </td>
     <td class="next">
       <% if @next_photo %>
-        <img src="<%= @next_photo.large_src %>" class="next_photo" style="display:none;"/>
+        <img src="<%= @next_photo.src %>" class="next_photo" style="display:none;"/>
         <% url = photo_url(@next_photo) %>
         <a href="<%= url[0,url.length - 1] %>"><span>&rsaquo;</span></a>
       <% end %>

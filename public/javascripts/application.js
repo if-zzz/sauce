@@ -1,4 +1,4 @@
-$(document).observe('dom:loaded',function(){
+$(document).observe('dom:loaded',function(){    
     //empty page
     var is_empty_page = function(){
         return $('empty');
@@ -130,7 +130,7 @@ $(document).observe('dom:loaded',function(){
         show_indicator_timeout = setTimeout(function(){
             indicator_fader.custom(0,1);
             indicator_visible = true;
-        },timeout_length || 1000);
+        },timeout_length || 750);
     };
     var hide_indicator = function(){
         clearTimeout(show_indicator_timeout);
@@ -348,8 +348,9 @@ $(document).observe('dom:loaded',function(){
             var next_image = get_next_image();
             show_indicator();
             load_image(next_image.src,function(){
-                hide_indicator();
-                go_to_page(next_link.href);
+                go_to_page(next_link.href,null,function(){
+                    hide_indicator();
+                });
             });
         }
     };
@@ -360,8 +361,9 @@ $(document).observe('dom:loaded',function(){
             var previous_image = get_previous_image();
             show_indicator();
             load_image(previous_image.src,function(){
-                hide_indicator();
-                go_to_page(previous_link.href);
+                go_to_page(previous_link.href,null,function(){
+                    hide_indicator();
+                });
             });
         }
     };
@@ -798,9 +800,21 @@ $(document).observe('dom:loaded',function(){
             setTimeout(function(){navigation_label_fader.toggle();},3000);
             setTimeout(function(){navigation_appear();},3500);
             
-            setTimeout(function(){tutorial_fader.custom(1,0);},7000);
-            setTimeout(function(){navigation_fade();},7500);
-            setTimeout(function(){$('tutorial').remove();},8001);
+            setTimeout(function(){tutorial_fader.custom(1,0);},6000);
+            setTimeout(function(){navigation_fade();},6500);
+            setTimeout(function(){$('tutorial').remove();},7001);
         },3751);
     };
+    
+    //window enter and leave cleanup
+    Event.observe(window,'mouseout',function(event){
+        if(!event.relatedTarget){
+            
+        }
+    });
+    Event.observe(window,'mouseover',function(event){
+        if(!event.relatedTarget){
+            
+        }
+    });
 });
