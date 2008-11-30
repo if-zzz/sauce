@@ -10,7 +10,9 @@ Rails::Initializer.run do |config|
   }
 end
 
-require 'mini_exiftool'
+EXIF_TOOL_LOCATION = RAILS_ENV == 'production' ? '~/Image-ExifTool-7.54/exiftool' : 'exiftool'
+
+require 'lib/mini_exiftool'
 require 'ftools'
 
 PHOTOS_ROOT = RAILS_ROOT + '/public/photos'
@@ -21,5 +23,3 @@ LENS_TRANSLATIONS = {
   '24.0-70.0 mm' => 'Sigma 24-70mm f/2.8 EX Aspherical DG DF',
   '15.0-30.0 mm' => 'Sigma 15-30/3.5-4.5 EX DG DF'
 }
-
-require 'deploy' if File.exists?(RAILS_ROOT + '/config/deploy.rb')
